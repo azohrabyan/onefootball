@@ -1,0 +1,11 @@
+{
+  "status": "ok",
+  "code": 0,
+  "data": {
+    "team": {
+      "id": 96,
+      "name": "Germany"
+    }
+  },
+  "message": "Team feed successfully generated. Api Version: 1"
+}
