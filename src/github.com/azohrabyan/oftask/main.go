@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const MaxTeamId = 300
+
 func main() {
 	baseUri := "https://vintagemonster.onefootball.com"
 	fmt.Printf("Connecting to %s.\n", baseUri)
@@ -19,15 +21,34 @@ func main() {
 	}
 	apiClient := api.NewClient(httpClient, baseUri)
 
-	teams := []int{96, 61, 45, 34, 2, 9, 21, 6, 5, 26}
+	teamNames :=[]string{
+		"Germany",
+		"England",
+		"France",
+		"Spain",
+		"Manchester Utd",
+		"Arsenal",
+		"Chelsea",
+		"Barcelona",
+		"Real Madrid",
+		"FC Bayern Munich",
+	}
 	repo := repository.NewRepository()
-	for _, id := range teams {
+	for id := 1; len(teamNames) > 0 && id < MaxTeamId; id++ {
 		team, err := apiClient.Team(id)
 		if err != nil {
-			log.Fatal("Error when retreiving data for team ", id)
+			log.Fatal("Error when retreiving data for team ", id, err)
 			continue
 		}
-		repo.ExtractPlayersFrom(team)
+		if index := inArray(teamNames, team.Name); index != -1 {
+			fmt.Println("Found team", team.Name, "extracting players");
+			team, err := apiClient.TeamPlayers(id)
+			if err != nil {
+				log.Fatal("Error when fetching team players", id, err)
+			}
+			repo.ExtractPlayersFrom(team)
+			teamNames = append(teamNames[:index], teamNames[index+1:]...)
+		}
 	}
 
 	sortedIds := repository.NewPlayerSorter(repo.Players()).SortBy(repository.Name)
@@ -35,6 +56,15 @@ func main() {
 	for i, id := range sortedIds {
 		fmt.Println(formatPlayer(i, repo.Player(id)))
 	}
+}
+
+func inArray(a []string, needed string) int {
+	for index, value := range a {
+		if value == needed {
+			return index
+		}
+	}
+	return -1
 }
 
 func formatPlayer(i int, p *repository.Player) string {

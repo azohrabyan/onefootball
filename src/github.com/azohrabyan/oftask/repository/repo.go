@@ -55,8 +55,8 @@ func NewRepository() Repository {
 	}
 }
 
-func (r *Repository) ExtractPlayersFrom(apiTeam *api.Team) {
-	team := r.newTeamIfNotExists(apiTeam)
+func (r *Repository) ExtractPlayersFrom(apiTeam *api.TeamPlayers) {
+	team := r.newTeamIfNotExists(&apiTeam.Team)
 	for _, apiPlayer := range apiTeam.Players {
 		player := r.newPlayerIfNotExists(&apiPlayer)
 		team.AddPlayer(player)

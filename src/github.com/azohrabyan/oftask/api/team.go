@@ -1,8 +1,17 @@
 package api
 
+import (
+	"encoding/json"
+	"strconv"
+)
+
 type Team struct {
 	ID      int      `json:"id"`
 	Name    string   `json:"name"`
+}
+
+type TeamPlayers struct {
+	Team
 	Players []Player `json:"players"`
 }
 
