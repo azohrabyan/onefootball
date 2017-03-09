@@ -17,8 +17,10 @@ func TestTeam_AddPlayer(tst *testing.T) {
 }
 
 func TestRepository_ExtractFrom(tst *testing.T) {
-	at := api.Team{
-		ID: 1,
+	at := api.TeamPlayers{
+		Team: api.Team{
+			ID: 1,
+		},
 		Players: []api.Player{
 			{ID: 11},
 			{ID: 12},
@@ -40,15 +42,19 @@ func TestRepository_ExtractFrom(tst *testing.T) {
 }
 
 func TestRepository_ExtractFrom_PlayerDifferentTeams(tst *testing.T) {
-	at1 := api.Team{
-		ID: 1,
+	at1 := api.TeamPlayers{
+		Team: api.Team{
+			ID: 1,
+		},
 		Players: []api.Player{
 			{ID: 11},
 			{ID: 12},
 		},
 	}
-	at2 := api.Team{
-		ID: 2,
+	at2 := api.TeamPlayers{
+		Team: api.Team{
+			ID: 2,
+		},
 		Players: []api.Player{
 			{ID: 11},
 			{ID: 21},

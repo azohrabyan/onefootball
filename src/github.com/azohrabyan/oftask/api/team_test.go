@@ -11,15 +11,17 @@ func TestTeam_Unmarshall(t *testing.T) {
 	jsonString, err := os.Open("test-fixtures/team.json")
 	assert.Nil(t, err)
 
-	actual := Team{}
+	actual := TeamPlayers{}
 
 	jsonParser := json.NewDecoder(jsonString)
 	err = jsonParser.Decode(&actual)
 
 	assert.Nil(t, err)
-	assert.Equal(t, Team{
-		ID:   96,
-		Name: "Germany",
+	assert.Equal(t, TeamPlayers{
+		Team: Team{
+			ID:   96,
+			Name: "Germany",
+		},
 		Players: []Player{
 			{
 				ID:   1,
